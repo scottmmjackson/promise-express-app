@@ -1,0 +1,19 @@
+{
+  "name": "promise-express-app",
+  "version": "1.0.0",
+  "description": "Run your entire express app in a promise",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scottmmjackson/promise-express-app.git"
+  },
+  "author": "Scott Jackson <scottmmjackson@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/scottmmjackson/promise-express-app/issues"
+  },
+  "homepage": "https://github.com/scottmmjackson/promise-express-app#readme"
+}

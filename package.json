@@ -4,16 +4,21 @@
   "description": "Run your entire express app in a promise",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/scottmmjackson/promise-express-app.git"
   },
   "author": "Scott Jackson <scottmmjackson@gmail.com>",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/scottmmjackson/promise-express-app/issues"
   },
-  "homepage": "https://github.com/scottmmjackson/promise-express-app#readme"
+  "homepage": "https://github.com/scottmmjackson/promise-express-app#readme",
+  "dependencies": {
+    "bluebird": "^3.4.6",
+    "express": "^4.14.0"
+  }
 }

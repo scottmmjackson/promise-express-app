@@ -1,3 +1,4 @@
+'use strict';
 // import your libraries here
 const express = require('express');
 const promise = require('bluebird');
@@ -11,50 +12,57 @@ const app = express();
 // We begin by kicking off a resolved promise with an object containing only our express app
 promise.resolve({app})
 
-// then we have a function that pulls in environment variables, config files, whatever
-.then(resolveConfig)
+  // then we have a function that pulls in environment variables, config files, whatever
+  .then(resolveConfig)
 
-// then we apply our configs to the express app. All the `app.use` stuff goes here
-.then(configureExpress)
+  // then we apply our configs to the express app. All the `app.use` stuff goes here
+  .then(configureExpress)
 
-// then we bind our routes in the app
-.then(bindRoutes)
+  // then we bind our routes in the app
+  .then(bindRoutes)
 
-// then we listen for requests
-.then(listen)
+  // then we listen for requests
+  .then(listen)
+
+  // whoops! we crashed
+  .catch(crashHandler);
 
 
 // This doesn't need to be in this file. It's probably better if it's in a `config.js` file
 function resolveConfig(svc) {
-  svc.config = {
-    port: 3000
-  }
+  // functions that only mutate the service locator object don't need `with` statements
+  svc.config = require('./config.json');
   return svc;
 }
 
 // Note the use of the "with" keyword. If you're migrating code, this is important
 function configureExpress(svc) {
-  with(svc) {
-    app.use(require('body-parser'))
-  }
+  svc.app.use(require('body-parser').json(svc.bodyParserOptions));
   return svc;
 }
 
 // This should DEFINITELY be in its own file.
 function bindRoutes(svc) {
-  with(svc) {
-    app.get('/', (req, res) => {
-      res.send("it works!")
-    });
+  function getHandler(req, res) {
+    res.send('it works!')
   }
+
+  svc.app.get('/', getHandler);
   return svc;
 }
 
 // This doesn't need to be in its own file- but it can be! That's the magic of service location!
 function listen(svc) {
-  with(svc) {
-    const port = config.port;
-    app.listen(port, () => console.log(`Listening on ${port}`))
+  const port = svc.config.port;
+  function listeningMessage() {
+    console.log(`Listening on ${port}`)
   }
+  svc.app.listen(port, listeningMessage);
   return svc;
+}
+
+function crashHandler(err) {
+  console.error("Something terrible happened!", err);
+  // Close DB connections?
+  // Something else?
 }
